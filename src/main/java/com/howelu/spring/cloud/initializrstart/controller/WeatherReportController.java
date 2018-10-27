@@ -1,6 +1,7 @@
 package com.howelu.spring.cloud.initializrstart.controller;
 
 import com.howelu.spring.cloud.initializrstart.model.City;
+import com.howelu.spring.cloud.initializrstart.service.CityClient;
 import com.howelu.spring.cloud.initializrstart.service.WeatherReportService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,17 +27,16 @@ public class WeatherReportController {
     @Autowired
     private WeatherReportService weatherReportService;
 
+    @Autowired
+    private CityClient cityClient;
+
     @GetMapping("/cityId/{cityId}")
     public ModelAndView getReportByCityId(@PathVariable("cityId") String cityId, Model model) throws Exception {
-        // TODO provided by msa-weather-city-server
         List<City> cityList = null;
 
         try {
-            cityList = new ArrayList<>();
-            City city = new City();
-            city.setCityId("101280601");
-            city.setCityName("深圳");
-            cityList.add(city);
+            // provided by msa-weather-city-server
+            cityList = cityClient.listCity();
         } catch (Exception e) {
             logger.error("Exception!", e);
         }
