@@ -23,9 +23,19 @@ repositories {
     mavenCentral()
 }
 
+ext{
+    springCloudVersion='Finchley.SR2'
+}
 
 dependencies {
     implementation('org.springframework.boot:spring-boot-starter-web')
     implementation('org.springframework.boot:spring-boot-starter-thymeleaf')
+    implementation('org.springframework.cloud:spring-cloud-starter-netflix-eureka-client')
     testImplementation('org.springframework.boot:spring-boot-starter-test')
+}
+
+dependencyManagement{
+    imports{
+        mavenBom"org.springframework.cloud:spring-cloud-dependencies:${springCloudVersion}"
+    }
 }
