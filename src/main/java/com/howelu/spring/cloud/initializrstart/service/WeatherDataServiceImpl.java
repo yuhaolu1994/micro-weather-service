@@ -7,13 +7,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.core.ValueOperations;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 import javax.validation.constraints.NotNull;
 import java.io.IOException;
-import java.util.concurrent.TimeUnit;
 
 /**
  * Implementation of weather data service interface
@@ -21,14 +18,9 @@ import java.util.concurrent.TimeUnit;
 
 @Service
 public class WeatherDataServiceImpl implements WeatherDataService {
-    private static final Logger logger = LoggerFactory.getLogger(WeatherDataService.class);
+    private static final Logger logger = LoggerFactory.getLogger(WeatherDataServiceImpl.class);
 
     private static final String WEATHER_URI = "http://wthrcdn.etouch.cn/weather_mini?";
-
-    private static final long TIME_OUT = 1800L; // 1800s
-
-    @Autowired
-    private RestTemplate restTemplate;
 
     @Autowired
     private StringRedisTemplate stringRedisTemplate;
@@ -51,7 +43,7 @@ public class WeatherDataServiceImpl implements WeatherDataService {
      * @return
      */
     private WeatherResponse doGetWeather(@NotNull String uri) {
-        String strBody = null;
+        String strBody;
         ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
         ObjectMapper mapper = new ObjectMapper();
         WeatherResponse resp = null;
@@ -62,14 +54,8 @@ public class WeatherDataServiceImpl implements WeatherDataService {
             strBody = ops.get(uri);
         } else {
             logger.info("Redis does not have data");
-            ResponseEntity<String> respString = restTemplate.getForEntity(uri, String.class);
-
-            if (respString.getStatusCodeValue() == 200) {
-                strBody = respString.getBody();
-            }
-
-            // write to redis cache
-            ops.set(uri, strBody, TIME_OUT, TimeUnit.SECONDS);
+            // redis does not have data, throw exception
+            throw new RuntimeException("Redis does not have data");
         }
 
         // use ObjectMapper, response json String -> weather Object
@@ -80,32 +66,5 @@ public class WeatherDataServiceImpl implements WeatherDataService {
         }
 
         return resp;
-    }
-
-    @Override
-    public void syncDataByCityId(String cityId) {
-        String uri = WEATHER_URI + "citykey=" + cityId;
-        this.saveWeatherData(uri);
-    }
-
-    /**
-     * Save Weather Data To Redis Cache
-     * @param uri
-     */
-    private void saveWeatherData(String uri) {
-        String key = uri;
-        String strBody = null;
-        ValueOperations<String, String> ops = stringRedisTemplate.opsForValue();
-
-        // fetch weather data by API
-        ResponseEntity<String> respString = restTemplate.getForEntity(uri, String.class);
-
-        if (respString.getStatusCodeValue() == 200) {
-            strBody = respString.getBody();
-        }
-
-        // write weather data to redis cache
-        ops.set(key, strBody, TIME_OUT, TimeUnit.SECONDS);
-
     }
 }
