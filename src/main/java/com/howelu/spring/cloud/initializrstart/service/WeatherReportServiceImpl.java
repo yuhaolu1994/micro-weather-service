@@ -2,8 +2,6 @@ package com.howelu.spring.cloud.initializrstart.service;
 
 import com.howelu.spring.cloud.initializrstart.model.Forecast;
 import com.howelu.spring.cloud.initializrstart.model.Weather;
-import com.howelu.spring.cloud.initializrstart.model.WeatherResponse;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
