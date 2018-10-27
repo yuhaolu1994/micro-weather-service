@@ -1,5 +1,6 @@
-package com.howelu.spring.cloud.initializrstart.job;
+package com.howelu.spring.cloud.initializrstart.config;
 
+import com.howelu.spring.cloud.initializrstart.job.WeatherDataSyncJob;
 import org.quartz.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
