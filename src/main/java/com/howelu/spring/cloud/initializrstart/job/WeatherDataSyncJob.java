@@ -1,6 +1,7 @@
 package com.howelu.spring.cloud.initializrstart.job;
 
 import com.howelu.spring.cloud.initializrstart.model.City;
+import com.howelu.spring.cloud.initializrstart.service.CityClient;
 import com.howelu.spring.cloud.initializrstart.service.WeatherDataCollectionService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
@@ -21,18 +22,18 @@ public class WeatherDataSyncJob extends QuartzJobBean {
     @Autowired
     private WeatherDataCollectionService weatherDataCollectionService;
 
+    @Autowired
+    private CityClient cityClient;
+
     @Override
     protected void executeInternal(JobExecutionContext context) throws JobExecutionException {
         logger.info("Weather Data Sync Job. Start!");
 
         // get city list id by CityDataService
         List<City> cityList = null;
+
         try {
-            // TODO get data from cityDataService
-            cityList = new ArrayList<>();
-            City city = new City();
-            city.setCityId("101280601");
-            cityList.add(city);
+            cityList = cityClient.listCity();
         } catch (Exception e) {
             logger.error("Exception!", e);
         }
