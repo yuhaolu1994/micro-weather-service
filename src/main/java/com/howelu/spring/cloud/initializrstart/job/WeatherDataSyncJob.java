@@ -1,8 +1,6 @@
 package com.howelu.spring.cloud.initializrstart.job;
 
 import com.howelu.spring.cloud.initializrstart.model.City;
-import com.howelu.spring.cloud.initializrstart.service.CityDataService;
-import com.howelu.spring.cloud.initializrstart.service.WeatherDataService;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;

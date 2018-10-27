@@ -1,7 +1,6 @@
 package com.howelu.spring.cloud.initializrstart.controller;
 
 import com.howelu.spring.cloud.initializrstart.model.WeatherResponse;
-import com.howelu.spring.cloud.initializrstart.service.WeatherDataService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;

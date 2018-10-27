@@ -1,6 +1,5 @@
 package com.howelu.spring.cloud.initializrstart.controller;
 
-import com.howelu.spring.cloud.initializrstart.service.CityDataService;
 import com.howelu.spring.cloud.initializrstart.service.WeatherReportService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ui.Model;
@@ -16,14 +15,13 @@ import org.springframework.web.servlet.ModelAndView;
 @RestController
 @RequestMapping("/report")
 public class WeatherReportController {
-    @Autowired
-    private CityDataService cityDataService;
 
     @Autowired
     private WeatherReportService weatherReportService;
 
     @GetMapping("/cityId/{cityId}")
     public ModelAndView getReportByCityId(@PathVariable("cityId") String cityId, Model model) throws Exception {
+        // TODO provided by msa-weather-city-server
         model.addAttribute("title", "Your weather report");
         model.addAttribute("cityId", cityId);
         model.addAttribute("cityList", cityDataService.listCity());
