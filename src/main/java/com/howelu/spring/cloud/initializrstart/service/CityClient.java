@@ -6,7 +6,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 /**
  * City Client
  */
-@FeignClient("msa-weather-city-server")
+@FeignClient("msa-weather-city-eureka")
 public interface CityClient {
 
     @GetMapping("/cities")
