@@ -13,7 +13,7 @@ import java.util.List;
  * Data Client
  */
 @Service
-@FeignClient("msa-weather-eureka-client-zuul")
+@FeignClient(name = "msa-weather-eureka-client-zuul", fallback = DataClientFallback.class)
 public interface DataClient {
     /**
      * Get City List
