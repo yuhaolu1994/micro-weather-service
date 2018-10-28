@@ -18,7 +18,11 @@ public class WeatherReportServiceImpl implements WeatherReportService {
     public Weather getDataByCityId(String cityId) {
         // provided by micro-weather-data-server
         WeatherResponse resp = dataClient.getDataByCityId(cityId);
+        Weather data = null;
+        if (resp != null) {
+            data = resp.getData();
+        }
 
-        return resp.getData();
+        return data;
     }
 }
